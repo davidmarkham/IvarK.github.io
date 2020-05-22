@@ -54,7 +54,7 @@ function getMetaDimensionMultiplier (tier) {
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(true, "br4"), 0.0003))
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
   multiplier = multiplier.times(getQCReward(6))
-  
+  multiplier *=2;
   return dilates(multiplier.max(1), "meta")
 }
 
@@ -72,7 +72,7 @@ function getMetaDimensionRateOfChange(tier) {
       if (change<0||isNaN(change)) change = 0
   } else var change  = toGain.times(10).dividedBy(current);
 
-  return change*2;
+  return change;
 }
 
 function canBuyMetaDimension(tier) {
