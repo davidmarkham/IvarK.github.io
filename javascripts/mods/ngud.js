@@ -275,7 +275,7 @@ function exDilationUpgradeStrength(x,add=0) {
 	if (ret > .3) {
 		ret = .8 - Math.pow(Math.E, 2 * (.3 - ret)) / 2;
 	}
-	return 1 + ret / 2;
+	return 1 + ret;
 }
 
 function reverseDilation () {
