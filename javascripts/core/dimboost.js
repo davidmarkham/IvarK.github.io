@@ -22,7 +22,6 @@ function getDimensionBoostPower(next, focusOn) {
 }
 
 function softReset(bulk, tier=1) {
-	//if (bulk < 1) bulk = 1 (fixing issue 184)
 	if (tmp.ri) return;
 	var oldResets = player.resets
 	player.resets+=bulk;
@@ -122,7 +121,7 @@ function setInitialDimensionPower() {
 	if (player.infinityUpgradesRespecced!=undefined) tickspeedPower+=player.infinityUpgradesRespecced[1]*10
 	player.tickspeed=Decimal.pow(getTickSpeedMultiplier(), tickspeedPower).times(player.aarexModifications.newGameExpVersion?500:1e3)
 	
-	var ic3Power=player.totalTickGained*getEC14Power()
+	var ic3Power=player.totalTickGained*getECReward(14)
 	if (player.tickspeedBoosts!=undefined&&player.currentChallenge!="postc5") {
 		let mult = 30
 		if ((inNC(14) && player.aarexModifications.ngmX == 3) || player.currentChallenge == "postcngm3_3") mult = 20
@@ -144,7 +143,7 @@ function setInitialDimensionPower() {
 		ic3Power += ic3PowerTB
 	}
 	if ((inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") && player.aarexModifications.ngmX > 3) ic3Power-=(player.resets+player.tdBoosts)*10
-	player.postC3Reward=Decimal.pow(getPostC3RewardMult(),ic3Power)
+	player.postC3Reward=Decimal.pow(getPostC3Mult(),ic3Power)
 }
 
 function maxBuyDimBoosts(manual) {
@@ -226,14 +225,18 @@ function getSupersonicStart() {
 	if (inQC(5)) return 0
 	let r = 56e4
 	if (player.aarexModifications.nguspV && !player.aarexModifications.nguepV) r = 1e5
-	if (player.masterystudies) if (player.masterystudies.includes("t331")) r += 24e4
+	if (tmp.ngp3) {
+		if (player.masterystudies.includes("t331")) r += 24e4
+		if (player.masterystudies.includes("d12") && hasBosonicUpg(21)) r += getNanofieldRewardEffect(1, "supersonic")
+	}
 	return r
 }
 
 function getSupersonicMultIncrease() {
 	if (inQC(5)) return 20
-	if (player.masterystudies) if (player.masterystudies.includes("t331")) return 1
-	return 4
+	let r=4
+	if (player.masterystudies) if (player.masterystudies.includes("t331")) r=1
+	return r
 }
 
 document.getElementById("softReset").onclick = function () {

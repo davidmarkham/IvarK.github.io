@@ -139,7 +139,7 @@ let puDescs = {
 	12: "Matter increases slower.",
 	13: "Second Dimension multiplier is raised to a power.",
 	14: "Time speed is 2x faster.",
-	21: "Buying something divides matter if there is at least 1 matter.",
+	21: "Buying something reduces matter.",
 	22: "Antimatter boosts Paradox Dimensions 1 & 4.",
 	23: "Infinity power boosts Paradox Dimensions 2 & 5.",
 	24: "Time Shards boost Paradox Dimensions 3 & 6.",
@@ -358,7 +358,7 @@ function resetPSac() {
 			times: 0,
 			normalTimes: 0,
 			forcedTimes: 0,
-			lostResets: 0,
+			lostResets: (player.pSac && player.pSac.lostResets) || 0,
 			px: new Decimal(0),
 			upgs: keepPU ? player.pSac.upgs : [],
 			rebuyables: keepPU ? player.pSac.rebuyables : {}

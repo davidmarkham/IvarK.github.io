@@ -187,19 +187,22 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 	}
 	let dimMult = player.tickspeedBoosts==undefined?2:1
 	if (player.aarexModifications.newGameExpVersion) dimMult *= 10
+	if (player.aarexModifications.newGameMult) dimMult *= 2.1
 
 	if (player.infinityUpgrades.includes('dimMult')) dimMult *= infUpg12Pow()
-	if ((inNC(9) || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
+	if ((inNC(9)||player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
 
 	if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,player.tickspeedBoosts==undefined?1.0666:Math.min(Math.sqrt(1800,player.challengeTimes[3])*.1+1,1.0666)):dimMult*1.01;
-	dimMult += ECTimesCompleted("eterc3") * 0.8
+	dimMult += getECReward(3)
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") dimMult *= galMults.u33();
 	if (focusOn == "no-QC5") return dimMult
 	if (QCIntensity(5)) dimMult += getQCReward(5)
-	if (player.masterystudies) {
-		if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8)
-		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(undefined, focusOn == "br4"))
+	if (tmp.ngp3) {
+		if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8, "per-10")
+		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(focusOn))
 	}
+	if (player.aarexModifications.newGameMult) dimMult = Decimal.times(dimMult,Math.log10(player.resets+1)+1)
+	if (player.aarexModifications.newGameMult) dimMult = Decimal.times(dimMult,Math.log10(player.galaxies+1)*5+1)
 	return dimMult;
 }
 
@@ -226,8 +229,7 @@ function getDimensionCostMultiplier(tier) {
 }
 	
 function onBuyDimension(tier) {
-	if (!player.break) giveAchievement(allAchievements["r1"+tier])
-	
+	giveAchievement(allAchievements["r1"+tier])
 	if (inNC(2) || player.currentChallenge == "postc1" || player.pSac !== undefined) player.chall2Pow = 0
 	if (inNC(8) || player.currentChallenge == "postc1") clearDimensions(tier-1)
 	if ((inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6) || player.pSac !== undefined) && player.matter.equals(0)) player.matter = new Decimal(1)
@@ -277,12 +279,13 @@ function buyOneDimension(tier) {
 	player[name + "Amount"] = player[name + "Amount"].add(1)
 	recordBought(name, 1)
 	if (dimBought(tier) < 1) {
-		player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
+		let b=getDimensionPowerMultiplier(tier)
+		player[name + "Pow"] = player[name + "Pow"].times(b)
 		if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
 		else if (inNC(5) && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
 		else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
-		floatText("D"+tier, "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
+		floatText("D"+tier, "x" + shortenMoney(b))
 	}
 	if (tier<2&&getAmount(1)>=1e150) giveAchievement("There's no point in doing that")
 	if (getAmount(8)==99) giveAchievement("The 9th Dimension is a lie");
@@ -301,13 +304,14 @@ function buyManyDimension(tier, quick) {
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(toBuy)
 	recordBought(name, toBuy)
-	player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
+	let b=getDimensionPowerMultiplier(tier)
+	player[name + "Pow"] = player[name + "Pow"].times(b)
 	if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
 	else if (inNC(5) && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
 	else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
 	if (!quick) {
-		floatText("D"+tier, "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
+		floatText("D"+tier, "x" + shortenMoney(b))
 		onBuyDimension(tier)
 	}
 	reduceMatter(toBuy)

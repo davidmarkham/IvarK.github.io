@@ -2,7 +2,8 @@
 function getBlackholeDimensionPower(tier) {
   var dim = player["blackholeDimension"+tier];
 
-  let ret = dim.power;
+  let ret = dim.power
+  if (player.aarexModifications.ngumuV) ret = ret.pow(Math.sqrt(getMPTPower()))
 
   if (ret.lt(1)) {
     ret = new Decimal(1)
@@ -48,7 +49,7 @@ function getBlackholeUpgradeExponent() {
 	let ret = player.blackhole.upgrades.total / 10
 	if (player.dilation.upgrades.includes("ngusp2")) ret += getD21Bonus()
 	if (ret > 2) ret = (ret - 2) / Math.log2(ret) + 2
-	if (ret > 20 && (player.aarexModifications.ngudpV || player.aarexModifications.nguspV)) ret = Math.min(20+Math.pow(Math.log10(ret-19),2),ret) // this should only happen if you are playing NGUd'.
+	if (ret > 20 && (player.aarexModifications.ngudpV || player.aarexModifications.nguspV)) ret=20+Math.pow(Math.log10(ret-19),player.aarexModifications.ngumu?2.5:2) // this should only happen if you are playing NGUd'.
 	return ret
 }
 
@@ -235,10 +236,14 @@ function updateExdilation() {
 	document.getElementById("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
 	document.getElementById("exDilationBenefit").textContent = (player.aarexModifications.nguspV?exDilationBenefit()*100:exDilationBenefit()/0.0075).toFixed(1)
 	for (var i=1;i<5;i++) {
-		document.getElementById("xd"+i).style.height = player.aarexModifications.nguspV ? "60px" : "50px"
-		document.getElementById("xd"+i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
-		if (player.aarexModifications.nguspV !== undefined) document.getElementById("xd"+i+"span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
-		else document.getElementById("xd"+i+"span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
+		let unl = isDilUpgUnlocked(i > 3 ? 11 : i)
+		if (unl) {
+			document.getElementById("xd"+i).style.height = player.aarexModifications.nguspV ? "60px" : "50px"
+			document.getElementById("xd"+i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
+			if (player.aarexModifications.nguspV !== undefined) document.getElementById("xd"+i+"span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
+			else document.getElementById("xd"+i+"span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
+		}
+		document.getElementById("xd"+i).style.display = unl ? "" : "none"
 	}
 }
 
