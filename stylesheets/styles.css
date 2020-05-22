@@ -199,7 +199,7 @@ button {
     background: #007308;
     border: 4px solid #127A20;
     border-radius: 10px;
-	color: black
+	color: white
 }
 
 .storebtn {
@@ -543,6 +543,7 @@ button {
 	top: 40px;
 	width: 210px;
 	height: 70px;
+	border-radius: 4px;
 	font-size: 11px
 }
 
@@ -791,8 +792,9 @@ button {
 }
 
 .ghostifybtn {
-	background: linear-gradient(#0c001e, #3a003f);
-	border: 2px solid transparent;
+	background: linear-gradient(#0c0033, #2e0033);
+	box-shadow: inset 0px 0px 24px 0px black;
+	border: 2px solid;
 	font-family: Typewriter;
 	font-weight: bold;
 	border-radius: 4px;
@@ -805,8 +807,7 @@ button {
 }
 
 .ghostifybtn:hover {
-	border-color: rgba(255,255,255,0.5);
-	box-shadow: inset 0px 0px 12px 0px #ffffff;
+	box-shadow: inset 0px 0px 12px 0px #420072;
 	cursor: pointer
 }
 
@@ -864,6 +865,12 @@ button {
     color: black;
     font-size: 70%;
     user-select: none;
+}
+
+.achRowInfo {
+    width: 104px;
+    margin: 0px auto;
+    text-align: center
 }
 
 .autoBuyerDiv {
@@ -1052,7 +1059,10 @@ button {
 .quantumProgress { background: #0a640a !important }
 .quantumProgress #progresspercent { color: #32c832 }
 
-.ghostifyProgress { background: linear-gradient(#0c001e, #3a003f) !important }
+.ghostifyProgress { 
+	background: linear-gradient(#0c0033, #2e0033) !important;
+	box-shadow: inset 0px 0px 24px 0px black
+}
 .ghostifyProgress #progresspercent { animation: ghostifytext 4s linear infinite }
 .ghostifyProgress #progresspercent::before { text-shadow: none }
 
@@ -2098,14 +2108,14 @@ br {
 	border: 2px solid #4c4c4c;
 	width: 210px;
 	height: 90px;
-	color: #4c4c4c;
+	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
+	color: #727272;
 	font-size: 12px;
 	animation: nanofieldanimation 5s infinite
 }
 
 #produceQuarkCharge:hover {
-	color: #727272;
-	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
+	color: #999999
 }
 
 .nanofieldreward {
@@ -2290,7 +2300,8 @@ br {
 }
 
 .brCompleted {
-	background: linear-gradient(#0c001e, #3a003f);
+	background: linear-gradient(#0c0033, #2e0033);
+	box-shadow: inset 0px 0px 24px 0px black;
 	border: 2px solid transparent;
 	font-family: Typewriter;
 	border-radius: 10px;
@@ -2298,11 +2309,11 @@ br {
 	animation: ghostifytext 4s linear infinite
 }
 
-.brCompleted[ach-tooltip]:before {
+.brCompleted[ach-tooltip]:before, .bRune[ach-tooltip]:before {
 	text-shadow: none !important
 }
 
-#bugExport b, #tooMuchPowerConsumed {
+#bugExport b, .warning {
 	color: #ff0000
 }
 
@@ -2313,7 +2324,7 @@ br {
 	width: 100%;
 	height: 0px;
 	animation: ghostifytext 4s linear infinite;
-	background: linear-gradient(#0c001e, #3a003f);
+	background: linear-gradient(#0c0033, #2e0033);
 	overflow: hidden;
 	transition-duration: 1s
 }
@@ -2330,25 +2341,31 @@ br {
 	transition-duration: 1s
 }
 
+.neutrinos {
+	font-size: 35px
+}
+
 .gluonupgrade.neutrinoupg {
 	background: black !important;
 	border: 1px solid #bfbfbf;
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
-	color: black;
+	color: #bfbfbf;
 	text-shadow: 0px 0px 3px #bfbfbf, 0px 0px 6px #bfbfbf
 }
 
 .gluonupgrade.neutrinoupg:hover {
 	background: white !important;
+	color: #3f3f3f;
+	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f;
 	cursor: pointer
 }
 
 .gluonupgradebought.neutrinoupg {
-	background: white !important;
-	border: 1px solid #bfbfbf;
-	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
-	color: white;
-	text-shadow: 0px 0px 3px black, 0px 0px 6px black
+	background: #bfbfbf !important;
+	border: 1px solid #7f7f7f;
+	box-shadow: inset 0px 0px 20px 0px #7f7f7f;
+	color: #3f3f3f;
+	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f
 }
 
 .neutrinoBoosts {
@@ -2400,27 +2417,212 @@ br {
 	color: #8f00bf
 }
 
-.gluonupgrade.wzb {
+#bRunes {
+	width:100%
+}
+
+#bRunes td {
+	text-align:center;
+	font-size:25px
+}
+
+.bRune {
+	background: white;
+	height: 1em;
+	width: 1em;
+	box-shadow: 0px 0px 12px white;
+	display: inline-block
+}
+
+.bRune.Infinity {
+	background: #b67f33;
+	box-shadow: 0px 0px 12px #b67f33
+}
+
+.bRune.Eternity {
+	background: #b341e0;
+	box-shadow: 0px 0px 12px #b341e0
+}
+
+.bRune.Quantum {
+	background: #32c832;
+	box-shadow: 0px 0px 12px #32c832
+}
+
+.bRune.Ghostly {
+	background: #e900ff;
+	box-shadow: 0px 0px 12px #6a00ff
+}
+
+.bRune.Ethereal {
+	background: #3f6fff;
+	box-shadow: 0px 0px 12px #002fbf
+}
+
+.bRune.Sixth {
+	background: #26f4c1;
+	box-shadow: 0px 0px 12px #26f4c1
+}
+
+.bRune.Seventh {
+	background: #6a6ca3;
+	box-shadow: 0px 0px 12px #6a6ca3
+}
+
+.bRune.Eighth {
+	background: #d10fed;
+	box-shadow: 0px 0px 12px #d10fed
+}
+
+.bRune.Ninth {
+	background: #3a4e1d;
+	box-shadow: 0px 0px 12px #3a4e1d
+}
+
+.bRune.Tenth {
+	background: #f6d779;
+	box-shadow: 0px 0px 12px #f6d779
+}
+
+.bRune.Eleventh {
+	background: #d52d50;
+	box-shadow: 0px 0px 12px #d52d50
+}
+
+.bRune.Twelfth {
+	background: #f453e4;
+	box-shadow: 0px 0px 12px #f453e4
+}
+
+.chosenbtn {
+    width: 120px;
+	height: 25px;
+	background: #3A7F42;
+	border: 1px solid #127A20;
+	border-radius: 4px;
+	font-size: 13px;
+	font-weight: bold;
+    font-family: Typewriter;
+	transition-duration: 0.2s
+}
+
+.gluonupgrade.bl {
 	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), black;
+	background-size: 200% 200%;
+	border: 1px solid transparent;
+	color: white;
+	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
+	animation: bl 5s linear infinite
+}
+
+.gluonupgrade.bl:hover {
+	box-shadow: inset 0px 0px 24px #38cbea;
+	border-color: #38cbea;
+	cursor: pointer
+}
+
+.gluonupgradebought.bl {
+	background: repeating-linear-gradient(#9df29a, transparent 50%, #9df29a 100%), repeating-linear-gradient(90deg, transparent, #38cbea 50%, transparent 100%), black;
 	background-size: 200% 200%;
 	border: 1px solid transparent;
 	color: black;
 	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
-	animation: wzb 5s linear infinite
+	animation: bl 5s linear infinite
 }
 
-.gluonupgrade.wzb:hover {
+#wQk {
+	position: relative;
+	left: calc(50% - 120px);
+	height: 240px;
+	width: 240px;
+	border-radius: 120px !important;
+	font-size: 120px;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	transition-duration: 0.2s
+}
+
+.up {
+	background: #620d65;
+	box-shadow: 0px 0px 12px #620d65
+}
+
+.down {
+	background: #9df29a;
+	box-shadow: 0px 0px 12px #9df29a
+}
+
+.zero {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), black;
+	background-size: 200% 200%;
+	box-shadow: 0px 0px 12px white;
+	animation: bl 5s linear infinite
+}
+
+#wQkSymbol {
+	position: absolute;
+	color: white
+}
+
+.up #wQkSymbol {
+	transform: translate(-50%, 15%)
+}
+
+.down #wQkSymbol {
+	transform: translate(-50%, 12%)
+}
+
+.zero #wQkSymbol {
+	transform: translate(-50%, 15%)
+}
+
+#zNe {
+	position: relative;
+	left: calc(50% - 120px);
+	height: 240px;
+	width: 240px;
+	background: #bfbfbf;
+	box-shadow: 0px 0px 12px #7f7f7f;
+	border-radius: 120px !important;
+	font-size: 120px;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	transition-duration: 0.2s
+}
+
+#zNeSymbol {
+	position: absolute;
+	color: #3f3f3f;
+	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f
+}
+
+.electron #zNeSymbol {
+	transform: translate(-50%, 10%)
+}
+
+.mu #zNeSymbol {
+	transform: translate(-50%, 0%)
+}
+
+.tau #zNeSymbol {
+	transform: translate(-50%, 0%)
+}
+
+#antipreon {
+	position: relative
+}
+
+#apgInfo {
+	position: relative;
+	width: 100%;
+	background: #e55be5;
+	box-shadow: 0px 0px 12px #e55be5;
 	color: white;
-	cursor: pointer
+	animation: apgInfo 5s ease infinite
 }
 
-@keyframes wzb { 
-	0%{
-		background-position: 0% 0%
-	}
-	100%{
-		background-position: 200% 200%
-	}
+#apgInfo .warning {
+	color: #bf0000
 }
 
 @media print,
@@ -2703,15 +2905,39 @@ screen and (max-width: 480px) {
 
 @keyframes ghostifytext { 
 	0%{
-		color: #e900ff;
-		text-shadow: 0px 0px 3px #e900ff, 0px 0px 6px #ffffff;
+		border-color: #690072;
+		color: #e0ace5;
+		text-shadow: 0px 0px 3px white, 0px 0px 6px #d200e5;
 	}
 	50% {
-		color: #6a00ff;
-		text-shadow: 0px 0px 6px #6a00ff, 0px 0px 6px #ffffff;
+		border-color: #1c0072;
+		color: #baace5;
+		text-shadow: 0px 0px 6px white, 0px 0px 6px #3900e5;
 	}
 	100%{
-		color: #e900ff;
-		text-shadow: 0px 0px 3px #e900ff, 0px 0px 6px #ffffff;
+		border-color: #690072;
+		color: #e0ace5;
+		text-shadow: 0px 0px 3px white, 0px 0px 6px #d200e5;
+	}
+}
+
+@keyframes bl { 
+	0%{
+		background-position: 0% 0%
+	}
+	100%{
+		background-position: 200% 200%
+	}
+}
+
+@keyframes apgInfo { 
+	0%{
+		top: 0px
+	}
+	50%{
+		top: 6px
+	}
+	100%{
+		top: 0px
 	}
 }

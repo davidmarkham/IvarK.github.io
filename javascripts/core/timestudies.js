@@ -23,7 +23,7 @@ function buyWithIP() {
 }
 
 function buyWithEP() {
-  if (player.timeDimension1.bought < 1) {
+  if (!canBuyTTWithEP()) {
       alert("You need to buy at least 1 time dimension before you can purchase theorems with Eternity points.")
       return false;
   }
@@ -35,6 +35,10 @@ function buyWithEP() {
       updateEternityUpgrades()
       return true
   } else return false
+}
+
+function canBuyTTWithEP() {
+	return player.timeDimension1.bought || (player.masterystudies !== undefined && tmp.qu.bigRip.active)
 }
 
 function maxTheorems() {
@@ -53,7 +57,7 @@ function maxTheorems() {
 	}
 	
 	gainTT = Math.floor(player.eternityPoints.div(player.timestudy.epcost).plus(1).log2())
-	if (gainTT > 0 && player.timeDimension1.bought > 0) {
+	if (gainTT > 0 && canBuyTTWithEP()) {
 		player.timestudy.theorem += gainTT
 		player.eternityPoints = player.eternityPoints.sub(Decimal.pow(2, gainTT).sub(1).times(player.timestudy.epcost))
 		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = new Decimal(0)
@@ -313,6 +317,33 @@ function updateTimeStudyButtons(changed) {
   }
 }
 
+function updateBoughtTimeStudies() {
+	for (var i=0; i<player.timestudy.studies.length; i++) {
+		var num=player.timestudy.studies[i]
+		if (typeof(num)!="number") num=parseInt(num)
+		if (!all.includes(num)) continue
+		if (num == 71 || num == 81 || num == 91 || num == 101) {
+			document.getElementById(num).className = "timestudybought normaldimstudy"
+		} else if (num == 72 || num == 82 || num == 92 || num == 102) {
+			document.getElementById(num).className = "timestudybought infdimstudy"
+		} else if (num == 73 || num == 83 || num == 93 || num == 103) {
+			document.getElementById(num).className = "timestudybought timedimstudy"
+		} else if (num == 121 || num == 131 || num == 141) {
+			document.getElementById(num).className = "timestudybought activestudy"
+		} else if (num == 122 || num == 132 || num == 142) {
+			document.getElementById(num).className = "timestudybought passivestudy"
+		} else if (num == 123 || num == 133 || num == 143) {
+			document.getElementById(num).className = "timestudybought idlestudy"
+		} else if (num == 221 || num == 224 || num == 225 || num == 228 || num == 231 || num == 234) {
+			document.getElementById(num).className = "timestudybought darkstudy"
+		} else if (num == 222 || num == 223 || num == 226 || num == 227 || num == 232 || num == 233) {
+			document.getElementById(num).className = "timestudybought lightstudy"
+		} else {
+			document.getElementById(num).className = "timestudybought"
+		}
+	}	
+}
+
 function studiesUntil(id) {
   var col = id % 10;
   var row = Math.floor(id / 10);
@@ -490,7 +521,7 @@ function importSpec () {
 }
 
 function exportStudyTree() {
-  let output = document.getElementById('treeExportOutput');
+  let output = document.getElementById('output');
   let parent = output.parentElement;
 
   parent.style.display = "";
@@ -768,4 +799,18 @@ function changePresetTitle(id, placement) {
 		} else presets[id]=JSON.parse(atob(preset))
 	}
 	document.getElementById("preset_"+id+"_title").textContent=presets[id].title?presets[id].title:"Preset #"+placement
+}
+
+//Time Study Effects
+function getTS11Mult() {
+	let bigRipped = player.masterystudies === undefined ? false : tmp.qu.bigRip.active
+	let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
+	if (bigRipped && log > 900) log = Math.sqrt(log * 900)
+	else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
+	log /= player.aarexModifications.newGameExpVersion ? 4 : 1
+	return Decimal.pow(10, log)
+}
+
+function getTS32Mult() {
+	return Math.pow(Math.max(player.resets,1),player.aarexModifications.newGameMult?4:1)
 }
