@@ -72,7 +72,7 @@ function getMetaDimensionRateOfChange(tier) {
       if (change<0||isNaN(change)) change = 0
   } else var change  = toGain.times(10).dividedBy(current);
 
-  return change;
+  return change*2;
 }
 
 function canBuyMetaDimension(tier) {
